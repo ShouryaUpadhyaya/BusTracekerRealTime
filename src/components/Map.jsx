@@ -15,7 +15,7 @@ function Map({
     width: "100%",
     height: "100vh",
   };
-
+  const iconSize = new google.maps.Size(40, 40);
   if (!isLoaded) {
     return <h1>Error map not loaded</h1>;
   }
@@ -40,7 +40,7 @@ function Map({
           <Marker
             position={{ lat: BusLatitude, lng: BusLongitude }}
             label="bus"
-            icon={busIcon}
+            icon={{ url: busIcon, scaledSize: iconSize }}
           />
         )}
         {/* {display markers for user and bus} */}
