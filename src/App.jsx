@@ -14,7 +14,7 @@ function App() {
 
   return (
     <>
-      <div className="bg-[#352F44] text-white flex justify-center p-5">
+      <div className="bg-[#352F44] text-white fixed p-5 z-10 w-screen text-center">
         <h4 className="text-2xl font-bold">Duration: {duration}</h4>
       </div>
       <Map
