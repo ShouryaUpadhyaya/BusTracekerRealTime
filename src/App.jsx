@@ -14,10 +14,9 @@ function App() {
 
   return (
     <>
-      <h4>
-        Current location: latitude = {userLatitude} , longitude ={" "}
-        {userLongitude} duration: {duration}
-      </h4>
+      <div className="bg-[#352F44] text-white flex justify-center p-5">
+        <h4 className="text-2xl font-bold">Duration: {duration}</h4>
+      </div>
       <Map
         userLatitude={parseFloat(userLatitude)}
         userLongitude={parseFloat(userLongitude)}

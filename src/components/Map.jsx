@@ -65,12 +65,16 @@ function Map({
   }
   return (
     <>
-      <h1>map here</h1>
       <GoogleMap
         onLoad={(map) => (mapRef.current = map)}
         center={{
           lat: userLatitude,
           lng: userLongitude,
+        }}
+        options={{
+          scrollwheel: true, // Enable scroll wheel zoom
+          zoomControl: true, // Show zoom controls
+          disableDefaultUI: false, // Enable default UI (optional)
         }}
         zoom={30}
         mapContainerStyle={styleMap}
