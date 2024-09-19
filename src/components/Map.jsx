@@ -1,6 +1,12 @@
 import React from "react";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-function Map({ userLatitude, userLongitude, BusLatitude, BusLongitude }) {
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import busIcon from "./assets/bus.png";
+function Map({
+  userLatitude,
+  userLongitude,
+  BusLatitude = 12.974097955600998,
+  BusLongitude = 79.16401539898179,
+}) {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyDHYX_OWuy-Ts6V3XurRwnhR1ATYY8zLIw",
@@ -24,6 +30,19 @@ function Map({ userLatitude, userLongitude, BusLatitude, BusLongitude }) {
         zoom={30}
         mapContainerStyle={styleMap}
       >
+        {userLatitude && userLongitude && (
+          <Marker
+            position={{ lat: userLatitude, lng: userLongitude }}
+            label="user"
+          />
+        )}
+        {BusLatitude && BusLongitude && (
+          <Marker
+            position={{ lat: BusLatitude, lng: BusLongitude }}
+            label="bus"
+            icon={busIcon}
+          />
+        )}
         {/* {display markers for user and bus} */}
       </GoogleMap>
     </>
