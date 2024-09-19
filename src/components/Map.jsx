@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   GoogleMap,
   useJsApiLoader,
@@ -12,6 +12,8 @@ function Map({
   BusLatitude = 12.974097955600998,
   BusLongitude = 79.16401539898179,
 }) {
+  const mapRef = useRef(null);
+  const [directionsResponse, setDirectionsResponse] = useState(null);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyDHYX_OWuy-Ts6V3XurRwnhR1ATYY8zLIw",
@@ -20,6 +22,40 @@ function Map({
     width: "100%",
     height: "100vh",
   };
+  useEffect(() => {
+    if (
+      isLoaded &&
+      userLatitude &&
+      userLongitude &&
+      BusLatitude &&
+      BusLongitude
+    ) {
+      const directionsService = new window.google.maps.DirectionsService();
+      let request = {
+        origin: {
+          lat: parseFloat(userLatitude),
+          lng: parseFloat(userLongitude),
+        },
+        destination: {
+          lat: parseFloat(BusLatitude),
+          lng: parseFloat(BusLongitude),
+        },
+        travelMode: window.google.maps.TravelMode.DRIVING,
+      };
+      const calculateRoute = () => {
+        directionsService.route(request, (result, status) => {
+          if (status === window.google.maps.DirectionsStatus.OK) {
+            setDirectionsResponse(result);
+          } else {
+            console.error(`Error fetching directions ${status}`);
+          }
+        });
+      };
+
+      calculateRoute(); // Call function to calculate route
+    }
+  }, [isLoaded, userLatitude, userLongitude, BusLatitude, BusLongitude]);
+
   if (!isLoaded) {
     return <h1>Error map not loaded</h1>;
   }
@@ -27,6 +63,7 @@ function Map({
     <>
       <h1>map here</h1>
       <GoogleMap
+        onLoad={(map) => (mapRef.current = map)}
         center={{
           lat: userLatitude,
           lng: userLongitude,
@@ -50,7 +87,9 @@ function Map({
             }}
           />
         )}
-        {/* {display markers for user and bus} */}
+        {directionsResponse && (
+          <DirectionsRenderer directions={directionsResponse} />
+        )}
       </GoogleMap>
     </>
   );
