@@ -11,8 +11,11 @@ function Map({
   userLongitude,
   BusLatitude = 12.974097955600998,
   BusLongitude = 79.16401539898179,
+  duration,
+  setDuration,
 }) {
   const mapRef = useRef(null);
+  // const [duration, setDuration] = useState("loading...");
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -45,6 +48,8 @@ function Map({
       const calculateRoute = () => {
         directionsService.route(request, (result, status) => {
           if (status === window.google.maps.DirectionsStatus.OK) {
+            console.log();
+            setDuration(result.routes[0].legs[0].duration.text);
             setDirectionsResponse(result);
           } else {
             console.error(`Error fetching directions ${status}`);
@@ -55,7 +60,6 @@ function Map({
       calculateRoute(); // Call function to calculate route
     }
   }, [isLoaded, userLatitude, userLongitude, BusLatitude, BusLongitude]);
-
   if (!isLoaded) {
     return <h1>Error map not loaded</h1>;
   }
