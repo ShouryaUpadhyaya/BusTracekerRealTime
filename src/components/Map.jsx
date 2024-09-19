@@ -1,5 +1,10 @@
-import React from "react";
-import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import React, { useEffect, useRef } from "react";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Marker,
+  DirectionsRenderer,
+} from "@react-google-maps/api";
 import busIcon from "./assets/bus.png";
 function Map({
   userLatitude,
@@ -15,7 +20,6 @@ function Map({
     width: "100%",
     height: "100vh",
   };
-  const iconSize = new google.maps.Size(40, 40);
   if (!isLoaded) {
     return <h1>Error map not loaded</h1>;
   }
@@ -40,7 +44,10 @@ function Map({
           <Marker
             position={{ lat: BusLatitude, lng: BusLongitude }}
             label="bus"
-            icon={{ url: busIcon, scaledSize: iconSize }}
+            icon={{
+              url: busIcon,
+              scaledSize: new window.google.maps.Size(40, 40),
+            }}
           />
         )}
         {/* {display markers for user and bus} */}
